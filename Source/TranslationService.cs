@@ -59,13 +59,17 @@ namespace UniversalRimWorldTranslator
 
                     foreach (string file in Directory.GetFiles(selectedLanguageRoot, "*.xml", SearchOption.AllDirectories))
                     {
+                        string relativePath = file.Substring(selectedLanguageRoot.Length).TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                        if (!relativePath.StartsWith("Keyed" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase) &&
+                            !relativePath.StartsWith("Keyed" + Path.AltDirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+                            continue;
                         if (found >= MaxScanTexts) return found;
                         try
                         {
                             var document = new XmlDocument();
                             document.XmlResolver = null;
                             document.Load(file);
-                            XmlNodeList nodes = document.SelectNodes("/LanguageData/Keyed//text()");
+                            XmlNodeList nodes = document.SelectNodes("//text()");
                             if (nodes == null) continue;
                             foreach (XmlNode node in nodes)
                             {
