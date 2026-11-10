@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Script.Serialization;
 using System.Xml;
 using Verse;
 
@@ -151,21 +152,16 @@ namespace UniversalRimWorldTranslator
                 client.Encoding = Encoding.UTF8;
                 client.Headers[HttpRequestHeader.UserAgent] = "UniversalRimWorldTranslator/0.2";
                 string json = await client.DownloadStringTaskAsync(url).ConfigureAwait(false);
-                const string marker = "\"translatedText\":\"";
-                int start = json.IndexOf(marker, StringComparison.Ordinal);
-                if (start < 0) return null;
-                start += marker.Length;
-                var result = new StringBuilder();
-                bool escaped = false;
-                for (int i = start; i < json.Length; i++)
-                {
-                    char c = json[i];
-                    if (escaped) { result.Append(c == 'n' ? '\n' : c); escaped = false; continue; }
-                    if (c == '\\') { escaped = true; continue; }
-                    if (c == '"') break;
-                    result.Append(c);
-                }
-                return HttpUtility.HtmlDecode(result.ToString());
+                var serializer = new JavaScriptSerializer();
+                var payload = serializer.DeserializeObject(json) as System.Collections.Generic.IDictionary<string, object>;
+                if (payload == null) return null;
+                object responseData;
+                if (!payload.TryGetValue("responseData", out responseData)) return null;
+                var response = responseData as System.Collections.Generic.IDictionary<string, object>;
+                if (response == null) return null;
+                object translated;
+                if (!response.TryGetValue("translatedText", out translated)) return null;
+                return HttpUtility.HtmlDecode(Convert.ToString(translated));
             }
         }
     }
