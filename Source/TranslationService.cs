@@ -158,7 +158,7 @@ namespace UniversalRimWorldTranslator
                 {
                     char c = json[i];
                     if (escaped) { result.Append(c == 'n' ? '\n' : c); escaped = false; continue; }
-                    if (c == '\\\\') { escaped = true; continue; }
+                    if (c == '\\') { escaped = true; continue; }
                     if (c == '"') break;
                     result.Append(c);
                 }
