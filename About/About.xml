@@ -6,5 +6,5 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>Prototipo de traductor automático con caché local y proveedor online configurable.</description>
+  <description>Traductor experimental con diccionario local, exploración de archivos de idioma y traducción online opcional.</description>
 </ModMetaData>
