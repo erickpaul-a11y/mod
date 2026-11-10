@@ -49,7 +49,7 @@ namespace UniversalRimWorldTranslator
     {
         private static string FilePath => Path.Combine(GenFilePaths.ConfigFolderPath, "UniversalRimWorldTranslator.xml");
         public static TranslatorData Data = new TranslatorData();
-        public static Dictionary<string, string> Cache => Data.Cache;
+        public static ConcurrentDictionary<string, string> Cache => Data.Cache;
 
         public static void Load()
         {
