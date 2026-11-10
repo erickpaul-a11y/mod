@@ -1,31 +1,38 @@
 # Universal RimWorld Translator
 
-Traductor comunitario para RimWorld 1.6. Detecta texto traducible mediante un parche de Harmony, consulta una caché local y puede solicitar traducciones online a un proveedor configurable.
+Mod experimental para RimWorld 1.6 que combina un pequeño diccionario local, caché persistente y traducción online opcional.
 
-> Estado: prototipo inicial. No es todavía un traductor universal terminado ni garantiza traducir todos los textos de todos los mods.
+## Funciones añadidas
+- Parche Harmony sobre `Translator.Translate(string)` para consultar la caché cuando el juego traduce una clave.
+- Diccionario local inicial de palabras y frases frecuentes.
+- Exploración manual de archivos XML dentro de `Languages` de los mods cargados.
+- Envío opcional de textos desconocidos a MyMemory en segundo plano, con una sola petición a la vez y una pausa entre solicitudes.
+- Caché persistente en la configuración del juego.
+- Pantalla de ajustes: activar/desactivar red, elegir códigos de idioma y endpoint, explorar textos, guardar y borrar caché.
+- No modifica los archivos originales de otros mods.
 
-## Objetivos
-- No modificar los archivos originales de otros mods.
-- Mantener una caché local de traducciones.
-- Traducir en segundo plano para no bloquear la partida.
-- Configurar idioma de origen/destino y proveedor.
-- Permitir correcciones manuales en archivos XML.
+## Instalación: todavía requiere compilación
+Este repositorio contiene código fuente, no un DLL listo para instalar. No lo coloques directamente en la carpeta Mods esperando que funcione.
 
-## Requisitos
-- RimWorld 1.6
-- Harmony (incluido en RimWorld)
-- .NET Framework 4.7.2 para compilar el ensamblado
+Requisitos:
+- RimWorld 1.6.
+- Visual Studio o .NET SDK compatible con .NET Framework 4.7.2.
+- Harmony de RimWorld.
+- Referencias a `Assembly-CSharp.dll`, `UnityEngine.CoreModule.dll` y `0Harmony.dll`.
 
-## Compilación
-Abre `Source/UniversalRimWorldTranslator.csproj`, configura las referencias a `Assembly-CSharp.dll`, `UnityEngine.CoreModule.dll` y `0Harmony.dll` desde la instalación de RimWorld y compila en Release. Copia el DLL resultante a `Assemblies/`.
+Configura la variable `RIMWORLD_MANAGED` con la carpeta `RimWorldWin64_Data/Managed` de tu instalación y compila `Source/UniversalRimWorldTranslator.csproj` en Release. Copia el ensamblado resultante a `Assemblies/UniversalRimWorldTranslator.dll` dentro de la carpeta del mod.
 
-## Traducción online
-El prototipo usa MyMemory como proveedor configurable. El servicio gratuito tiene límites, puede fallar y sus traducciones requieren revisión. No se incluye ninguna clave privada. El juego no espera a la red: el resultado se guarda para la siguiente vez que aparezca el texto.
+## Cómo usar
+1. Abre el juego y activa el mod.
+2. Entra en Opciones > Mods > Universal RimWorld Translator.
+3. Configura el idioma de origen (por ejemplo `en`) y destino (`es`).
+4. Pulsa «Traducir textos detectados en archivos de mods».
+5. Espera a que se rellene la caché y vuelve a cargar la partida o el menú para que los textos interceptados puedan usarla.
 
-## Privacidad y seguridad
-El texto que se envía al proveedor externo sale de tu PC. No envíes contenido privado. Puedes desactivar la traducción online en la configuración del mod.
-
-## Limitaciones actuales
-- RimWorld y algunos mods construyen textos dinámicamente; no todos pasarán por el mismo método de traducción.
-- El prototipo no puede traducir imágenes, texto dibujado directamente ni interfaces que eviten el sistema de traducción de RimWorld.
-- Para máxima cobertura se necesitará una fase adicional de lectura de archivos de idioma y pruebas con una colección real de mods.
+## Privacidad y límites
+- Si activas la traducción online, los textos seleccionados se envían a MyMemory desde tu PC. No envíes contenido privado.
+- El servicio gratuito tiene límites y puede fallar. La traducción automática puede ser incorrecta.
+- El escáner lee textos XML, pero no reescribe ni crea archivos de idioma que RimWorld pueda cargar directamente. Por tanto, explorar un texto no garantiza que todas las pantallas del mod cambien inmediatamente.
+- La cobertura del parche depende de que el texto pase por el método de traducción interceptado. No traduce imágenes, texto dibujado directamente ni todo texto dinámico.
+- El diccionario local incluido es inicial y no contiene todavía un vocabulario exhaustivo.
+- El código aún no ha sido compilado ni probado dentro de RimWorld 1.6. Considera esta versión una base de desarrollo, no una versión estable.
