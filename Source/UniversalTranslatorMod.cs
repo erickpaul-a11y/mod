@@ -1,5 +1,6 @@
 using UnityEngine;
 using Verse;
+using RimWorld;
 
 namespace UniversalRimWorldTranslator
 {
@@ -23,7 +24,7 @@ namespace UniversalRimWorldTranslator
             listing.Begin(inRect);
             listing.Label("Universal RimWorld Translator - prototipo");
             listing.Gap();
-            SettingsStore.Data.OnlineEnabled = listing.CheckboxLabeled("Activar traducción online", SettingsStore.Data.OnlineEnabled);
+            listing.CheckboxLabeled("Activar traducción online", ref SettingsStore.Data.OnlineEnabled);
             listing.Label("Idioma de origen (código, por ejemplo en):");
             SettingsStore.Data.SourceLanguage = listing.TextEntry(SettingsStore.Data.SourceLanguage);
             listing.Label("Carpeta del idioma de origen (normalmente English):");
@@ -56,3 +57,4 @@ namespace UniversalRimWorldTranslator
         }
     }
 }
+
