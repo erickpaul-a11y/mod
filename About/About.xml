@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Universal RimWorld Translator</name>
+  <author>erickpaul-a11y</author>
+  <packageId>erickpaul.universalrimworldtranslator</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Prototipo de traductor automático con caché local y proveedor online configurable.</description>
+</ModMetaData>
