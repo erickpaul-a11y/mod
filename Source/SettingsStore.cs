@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
@@ -26,18 +27,21 @@ namespace UniversalRimWorldTranslator
         public List<TranslationEntry> CacheEntries = new List<TranslationEntry>();
 
         [XmlIgnore]
-        public Dictionary<string, string> Cache = new Dictionary<string, string>(StringComparer.Ordinal);
+        public ConcurrentDictionary<string, string> Cache = new ConcurrentDictionary<string, string>(StringComparer.Ordinal);
 
         public void RebuildCache()
         {
-            Cache = CacheEntries.Where(x => x != null && x.Original != null && x.Translated != null)
-                .GroupBy(x => x.Original, StringComparer.Ordinal)
-                .ToDictionary(g => g.Key, g => g.Last().Translated, StringComparer.Ordinal);
+            var rebuilt = CacheEntries == null
+                ? new Dictionary<string, string>(StringComparer.Ordinal)
+                : CacheEntries.Where(x => x != null && x.Original != null && x.Translated != null)
+                    .GroupBy(x => x.Original, StringComparer.Ordinal)
+                    .ToDictionary(g => g.Key, g => g.Last().Translated, StringComparer.Ordinal);
+            Cache = new ConcurrentDictionary<string, string>(rebuilt, StringComparer.Ordinal);
         }
 
         public void SyncEntries()
         {
-            CacheEntries = Cache.Select(x => new TranslationEntry { Original = x.Key, Translated = x.Value }).ToList();
+            CacheEntries = Cache.ToArray().Select(x => new TranslationEntry { Original = x.Key, Translated = x.Value }).ToList();
         }
     }
 
