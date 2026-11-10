@@ -19,6 +19,7 @@ namespace UniversalRimWorldTranslator
     {
         public bool OnlineEnabled = true;
         public string SourceLanguage = "en";
+        public string SourceLanguageFolder = "English";
         public string TargetLanguage = "es";
         public string Endpoint = "https://api.mymemory.translated.net/get";
         [XmlArray("Translations"), XmlArrayItem("Entry")]
