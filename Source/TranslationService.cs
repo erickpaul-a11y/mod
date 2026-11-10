@@ -65,7 +65,7 @@ namespace UniversalRimWorldTranslator
                             var document = new XmlDocument();
                             document.XmlResolver = null;
                             document.Load(file);
-                            XmlNodeList nodes = document.SelectNodes("//text()");
+                            XmlNodeList nodes = document.SelectNodes("/LanguageData/Keyed//text()");
                             if (nodes == null) continue;
                             foreach (XmlNode node in nodes)
                             {
