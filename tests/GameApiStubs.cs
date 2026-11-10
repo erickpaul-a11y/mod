@@ -31,14 +31,14 @@ namespace Verse
         public void End() { }
         public void Gap() { }
         public void Label(string value) { }
-        public bool CheckboxLabeled(string label, bool value) => value;
+        public void CheckboxLabeled(string label, ref bool value) { }
         public string TextEntry(string value) => value;
         public bool ButtonText(string label) => false;
     }
     public static class Messages { public static void Message(string text, object type, bool historical) { } }
-    public static class MessageTypeDefOf { public static object PositiveEvent = new object(); }
 }
 namespace UnityEngine { public struct Rect { } }
+namespace RimWorld { public static class MessageTypeDefOf { public static object PositiveEvent = new object(); } }
 namespace HarmonyLib
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)] public sealed class HarmonyPatch : Attribute { }
@@ -53,3 +53,4 @@ namespace HarmonyLib
         public static MethodInfo Method(Type type, string name, Type[] parameters) => type.GetMethod(name, parameters);
     }
 }
+
