@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Verse;
 
@@ -6,17 +5,13 @@ namespace UniversalRimWorldTranslator
 {
     public class UniversalTranslatorMod : Mod
     {
-        private Vector2 scroll;
         public UniversalTranslatorMod(ModContentPack content) : base(content)
         {
             SettingsStore.Load();
             LongEventHandler.ExecuteWhenFinished(() =>
             {
-                if (SettingsStore.Data.OnlineEnabled)
-                {
-                    int detected = TranslationService.ScanInstalledMods();
-                    Log.Message("[Universal Translator] Escaneo inicial: " + detected + " textos detectados.");
-                }
+                int detected = TranslationService.ScanInstalledMods();
+                Log.Message("[Universal Translator] Escaneo inicial: " + detected + " textos detectados.");
             });
         }
 
@@ -31,7 +26,9 @@ namespace UniversalRimWorldTranslator
             SettingsStore.Data.OnlineEnabled = listing.CheckboxLabeled("Activar traducción online", SettingsStore.Data.OnlineEnabled);
             listing.Label("Idioma de origen (código, por ejemplo en):");
             SettingsStore.Data.SourceLanguage = listing.TextEntry(SettingsStore.Data.SourceLanguage);
-            listing.Label("Idioma de destino (es para español):");
+            listing.Label("Carpeta del idioma de origen (normalmente English):");
+            SettingsStore.Data.SourceLanguageFolder = listing.TextEntry(SettingsStore.Data.SourceLanguageFolder);
+            listing.Label("Idioma de destino (código, es para español):");
             SettingsStore.Data.TargetLanguage = listing.TextEntry(SettingsStore.Data.TargetLanguage);
             listing.Label("Proveedor HTTP:");
             SettingsStore.Data.Endpoint = listing.TextEntry(SettingsStore.Data.Endpoint);
