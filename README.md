@@ -25,7 +25,7 @@ Configura la variable `RIMWORLD_MANAGED` con la carpeta `RimWorldWin64_Data/Mana
 ## Cómo usar
 1. Abre el juego y activa el mod.
 2. Entra en Opciones > Mods > Universal RimWorld Translator.
-3. Configura el idioma de origen (por ejemplo `en`) y destino (`es`).
+3. Configura el código del idioma de origen (`en`), la carpeta del idioma de origen (normalmente `English`) y destino (`es`). El escáner solo lee esa carpeta de idioma para no mezclar textos de idiomas diferentes.
 4. Pulsa «Traducir textos detectados en archivos de mods».
 5. Espera a que se rellene la caché y vuelve a cargar la partida o el menú para que los textos interceptados puedan usarla.
 
