@@ -41,6 +41,7 @@ namespace Verse
 namespace UnityEngine { public struct Rect { } }
 namespace HarmonyLib
 {
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)] public sealed class HarmonyPatch : Attribute { }
     public class Harmony
     {
         public Harmony(string id) { }
