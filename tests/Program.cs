@@ -15,6 +15,10 @@ internal static class Program
         if (TranslationService.Apply("stub-key", "stub-key").ToString() != "texto traducido")
             return Fail("Translation cache lookup failed.");
 
+        const string providerJson = "{\"responseData\":{\"translatedText\":\"Espa\\u00f1a &amp; caf\\u00e9\"}}";
+        if (TranslationService.ParseTranslationResponse(providerJson) != "España & café")
+            return Fail("Online provider JSON/Unicode parsing failed.");
+
         string root = Path.Combine(Path.GetTempPath(), "urt-stub-" + Guid.NewGuid().ToString("N"));
         try
         {
@@ -32,8 +36,9 @@ internal static class Program
         }
         finally { if (Directory.Exists(root)) Directory.Delete(root, true); }
 
-        Console.WriteLine("Stub checks passed: dictionary, cache, Keyed-only scan.");
+        Console.WriteLine("Stub checks passed: dictionary, cache, provider JSON, Keyed-only scan.");
         return 0;
     }
     private static int Fail(string message) { Console.Error.WriteLine(message); return 1; }
 }
+
