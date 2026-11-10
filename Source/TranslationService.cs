@@ -156,17 +156,24 @@ namespace UniversalRimWorldTranslator
                 client.Encoding = Encoding.UTF8;
                 client.Headers[HttpRequestHeader.UserAgent] = "UniversalRimWorldTranslator/0.2";
                 string json = await client.DownloadStringTaskAsync(url).ConfigureAwait(false);
-                var serializer = new JavaScriptSerializer();
-                var payload = serializer.DeserializeObject(json) as System.Collections.Generic.IDictionary<string, object>;
-                if (payload == null) return null;
-                object responseData;
-                if (!payload.TryGetValue("responseData", out responseData)) return null;
-                var response = responseData as System.Collections.Generic.IDictionary<string, object>;
-                if (response == null) return null;
-                object translated;
-                if (!response.TryGetValue("translatedText", out translated)) return null;
-                return HttpUtility.HtmlDecode(Convert.ToString(translated));
+                return ParseTranslationResponse(json);
             }
+        }
+
+        internal static string ParseTranslationResponse(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json)) return null;
+            var serializer = new JavaScriptSerializer();
+            var payload = serializer.DeserializeObject(json) as System.Collections.Generic.IDictionary<string, object>;
+            if (payload == null) return null;
+            object responseData;
+            if (!payload.TryGetValue("responseData", out responseData)) return null;
+            var response = responseData as System.Collections.Generic.IDictionary<string, object>;
+            if (response == null) return null;
+            object translated;
+            if (!response.TryGetValue("translatedText", out translated)) return null;
+            return HttpUtility.HtmlDecode(Convert.ToString(translated));
         }
     }
 }
+
