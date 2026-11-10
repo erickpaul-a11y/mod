@@ -53,8 +53,10 @@ namespace UniversalRimWorldTranslator
                 {
                     string languageRoot = Path.Combine(mod.RootDir, "Languages");
                     if (!Directory.Exists(languageRoot)) continue;
+                    string selectedLanguageRoot = Path.Combine(languageRoot, SettingsStore.Data.SourceLanguageFolder ?? "English");
+                    if (!Directory.Exists(selectedLanguageRoot)) continue;
 
-                    foreach (string file in Directory.GetFiles(languageRoot, "*.xml", SearchOption.AllDirectories))
+                    foreach (string file in Directory.GetFiles(selectedLanguageRoot, "*.xml", SearchOption.AllDirectories))
                     {
                         if (found >= MaxScanTexts) return found;
                         try
@@ -142,7 +144,8 @@ namespace UniversalRimWorldTranslator
         private static async Task<string> RequestTranslation(string text)
         {
             string langPair = Uri.EscapeDataString(SettingsStore.Data.SourceLanguage + "|" + SettingsStore.Data.TargetLanguage);
-            string url = SettingsStore.Data.Endpoint + "?q=" + Uri.EscapeDataString(text) + "&langpair=" + langPair;
+            string endpoint = string.IsNullOrWhiteSpace(SettingsStore.Data.Endpoint) ? "https://api.mymemory.translated.net/get" : SettingsStore.Data.Endpoint.Trim();
+            string url = endpoint + "?q=" + Uri.EscapeDataString(text) + "&langpair=" + langPair;
             using (var client = new WebClient())
             {
                 client.Encoding = Encoding.UTF8;
