@@ -77,8 +77,13 @@ namespace UniversalRimWorldTranslator
                 Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
                 Data.SyncEntries();
                 var serializer = new XmlSerializer(typeof(TranslatorData));
-                using (var stream = File.Create(FilePath))
+                string temporaryPath = FilePath + ".tmp";
+                using (var stream = File.Create(temporaryPath))
                     serializer.Serialize(stream, Data);
+                if (File.Exists(FilePath))
+                    File.Replace(temporaryPath, FilePath, null);
+                else
+                    File.Move(temporaryPath, FilePath);
             }
             catch (Exception ex)
             {
