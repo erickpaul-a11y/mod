@@ -43,6 +43,12 @@ El script compila `Source/UniversalRimWorldTranslator.csproj` y copia el ensambl
 4. En Opciones > Mods, abre los ajustes del traductor. Activa la red solo si aceptas enviar textos al proveedor.
 5. Usa el botón de escaneo y revisa `Player.log` si hay errores.
 
-## Estado de validación
+## Comprobaciones aisladas y estado de validación
 
-El código de este repositorio todavía necesita compilarse contra las DLL de RimWorld 1.6 y probarse dentro del juego. La revisión del código no valida por sí sola la firma/reflexión de Harmony contra la versión instalada, ni el comportamiento de traducción en una partida. Para esa validación hacen falta exactamente las tres DLL indicadas arriba y una ejecución del juego con el mod instalado. No presentes una compilación o prueba en juego como realizada hasta completar esos pasos.
+El workflow `.github/workflows/stub-check.yml` compila los archivos fuente contra stubs mínimos de Verse, Unity y Harmony y ejecuta comprobaciones de diccionario, caché y selección de archivos Keyed. Se puede ejecutar localmente en Windows con .NET SDK:
+
+```powershell
+dotnet run --project tests/CompileWithStubs.csproj --configuration Release
+```
+
+Estos stubs verifican sintaxis y lógica aislada, no demuestran compatibilidad binaria con el juego. El código todavía necesita compilarse contra las DLL reales de RimWorld 1.6 y probarse dentro del juego. La revisión del código no valida por sí sola la firma/reflexión de Harmony contra la versión instalada, ni el comportamiento de traducción en una partida. Para esa validación hacen falta exactamente las tres DLL indicadas arriba y una ejecución del juego con el mod instalado. No presentes una compilación o prueba en juego como realizada hasta completar esos pasos.
