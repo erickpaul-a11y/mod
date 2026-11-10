@@ -7,7 +7,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="../Source/*.cs" Link="Source/%(Filename)%(Extension)" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
   </ItemGroup>
 </Project>
+
