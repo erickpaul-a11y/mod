@@ -15,7 +15,7 @@ Prototipo de traducción al español para RimWorld 1.6. Intercepta llamadas a `T
 
 Este mod no es un traductor universal completo. La integración cubre cadenas que llegan a `Translator.Translate(string)` y coinciden con una traducción en caché. No procesa `DefInjected`, texto escrito directamente en código/UI, imágenes, ni todos los textos con variables. Las cadenas con llaves se excluyen para reducir daños a marcadores de formato. Las traducciones online se guardan en caché; una pantalla ya visible no se actualiza hasta que el juego vuelva a solicitar esa cadena.
 
-El escáner tiene un límite de 150 textos por pasada. Solo examina la carpeta seleccionada (normalmente `English`) y su subcarpeta `Keyed`. Algunas estructuras de XML de mods pueden no coincidir con lo que consume el traductor del juego. El proveedor gratuito puede fallar, limitar peticiones o devolver resultados incorrectos.
+El escáner tiene un límite de 150 textos por pasada. Solo examina la carpeta seleccionada (normalmente `English`) y su subcarpeta `Keyed`. Para que la caché coincida con los textos que recibe el parche, el idioma activo del juego debe corresponder al idioma fuente escaneado. Algunas estructuras de XML de mods pueden no coincidir con lo que consume el traductor del juego. El proveedor gratuito puede fallar, limitar peticiones o devolver resultados incorrectos.
 
 Al activar la opción online, el texto que no se encuentre en la caché se envía desde tu PC al endpoint configurado. Revisa el proveedor antes de habilitarla.
 
