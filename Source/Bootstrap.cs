@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using HarmonyLib;
 using Verse;
 
@@ -29,11 +28,11 @@ namespace UniversalRimWorldTranslator
     [HarmonyPatch]
     public static class TranslatePatch
     {
-        public static void Postfix(string key, ref TaggedString __result)
+        public static void Postfix(string __0, ref TaggedString __result)
         {
             try
             {
-                __result = TranslationService.Apply(key, __result.ToString());
+                __result = TranslationService.Apply(__0, __result.ToString());
             }
             catch (Exception ex)
             {
