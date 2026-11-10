@@ -18,7 +18,7 @@ namespace UniversalRimWorldTranslator
     [Serializable]
     public class TranslatorData
     {
-        public bool OnlineEnabled = true;
+        public bool OnlineEnabled = false;
         public string SourceLanguage = "en";
         public string SourceLanguageFolder = "English";
         public string TargetLanguage = "es";
