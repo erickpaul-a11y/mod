@@ -10,6 +10,14 @@ namespace UniversalRimWorldTranslator
         public UniversalTranslatorMod(ModContentPack content) : base(content)
         {
             SettingsStore.Load();
+            LongEventHandler.ExecuteWhenFinished(() =>
+            {
+                if (SettingsStore.Data.OnlineEnabled)
+                {
+                    int detected = TranslationService.ScanInstalledMods();
+                    Log.Message("[Universal Translator] Escaneo inicial: " + detected + " textos detectados.");
+                }
+            });
         }
 
         public override string SettingsCategory() => "Universal RimWorld Translator";
