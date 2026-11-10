@@ -5,8 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Script.Serialization;
+using System.Globalization;
 using System.Xml;
 using Verse;
 
@@ -163,17 +162,51 @@ namespace UniversalRimWorldTranslator
         internal static string ParseTranslationResponse(string json)
         {
             if (string.IsNullOrWhiteSpace(json)) return null;
-            var serializer = new JavaScriptSerializer();
-            var payload = serializer.DeserializeObject(json) as System.Collections.Generic.IDictionary<string, object>;
-            if (payload == null) return null;
-            object responseData;
-            if (!payload.TryGetValue("responseData", out responseData)) return null;
-            var response = responseData as System.Collections.Generic.IDictionary<string, object>;
-            if (response == null) return null;
-            object translated;
-            if (!response.TryGetValue("translatedText", out translated)) return null;
-            return HttpUtility.HtmlDecode(Convert.ToString(translated));
+            const string marker = "\"translatedText\"";
+            int key = json.IndexOf(marker, StringComparison.Ordinal);
+            if (key < 0) return null;
+            int colon = json.IndexOf(':', key + marker.Length);
+            if (colon < 0) return null;
+            int start = colon + 1;
+            while (start < json.Length && char.IsWhiteSpace(json[start])) start++;
+            if (start >= json.Length || json[start] != '"') return null;
+
+            var result = new StringBuilder();
+            for (int i = start + 1; i < json.Length; i++)
+            {
+                char value = json[i];
+                if (value == '"') return WebUtility.HtmlDecode(result.ToString());
+                if (value != '\\')
+                {
+                    result.Append(value);
+                    continue;
+                }
+
+                if (++i >= json.Length) return null;
+                switch (json[i])
+                {
+                    case '"': result.Append('"'); break;
+                    case '\\': result.Append('\\'); break;
+                    case '/': result.Append('/'); break;
+                    case 'b': result.Append('\b'); break;
+                    case 'f': result.Append('\f'); break;
+                    case 'n': result.Append('\n'); break;
+                    case 'r': result.Append('\r'); break;
+                    case 't': result.Append('\t'); break;
+                    case 'u':
+                        if (i + 4 >= json.Length) return null;
+                        int codeUnit;
+                        if (!int.TryParse(json.Substring(i + 1, 4), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out codeUnit))
+                            return null;
+                        result.Append((char)codeUnit);
+                        i += 4;
+                        break;
+                    default: return null;
+                }
+            }
+            return null;
         }
     }
 }
+
 
