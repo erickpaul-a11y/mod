@@ -20,7 +20,13 @@ Requisitos:
 - Harmony de RimWorld.
 - Referencias a `Assembly-CSharp.dll`, `UnityEngine.CoreModule.dll` y `0Harmony.dll`.
 
-Configura la variable `RIMWORLD_MANAGED` con la carpeta `RimWorldWin64_Data/Managed` de tu instalación y compila `Source/UniversalRimWorldTranslator.csproj` en Release. Copia el ensamblado resultante a `Assemblies/UniversalRimWorldTranslator.dll` dentro de la carpeta del mod.
+En Windows puedes compilar con el script incluido. Abre PowerShell en la carpeta del repositorio y ejecuta:
+
+```powershell
+.\\build.ps1 -RimWorldManaged "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\RimWorldWin64_Data\\Managed"
+```
+
+Ajusta la ruta a tu instalación. El script comprueba las tres DLL necesarias, compila en Release y copia el resultado a `Assemblies/UniversalRimWorldTranslator.dll`. También puedes compilar `Source/UniversalRimWorldTranslator.csproj` manualmente.
 
 ## Cómo usar
 1. Abre el juego y activa el mod.
