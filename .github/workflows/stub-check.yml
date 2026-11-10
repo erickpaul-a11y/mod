@@ -1,0 +1,15 @@
+name: Stub compile and checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  compile-with-game-api-stubs:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Compile source against API stubs and run behavior checks
+        run: dotnet run --project tests/CompileWithStubs.csproj --configuration Release
